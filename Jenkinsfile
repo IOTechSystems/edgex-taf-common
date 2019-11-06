@@ -29,12 +29,12 @@ pipeline {
     }
 
     stages {
-        stage('LF Prep') {
-            steps {
-                edgeXSetupEnvironment()
-                edgeXDockerLogin(settingsFile: env.MVN_SETTINGS)
-            }
-        }
+//         stage('LF Prep') {
+//             steps {
+//                 edgeXSetupEnvironment()
+//                 edgeXDockerLogin(settingsFile: env.MVN_SETTINGS)
+//             }
+//         }
 
         stage('Build Docker Image') {
             parallel {
@@ -51,17 +51,17 @@ pipeline {
                             }
                         }
 
-                        stage('Docker Push') {
-                            when { expression { edgex.isReleaseStream() } }
-                            steps {
-                                script {
-                                    docker.withRegistry("https://${env.DOCKER_REGISTRY}:10004") {
-                                        image_amd64.push(env.GIT_COMMIT)
-                                        image_amd64.push('1.1.1')
-                                    }
-                                }
-                            }
-                        }
+//                         stage('Docker Push') {
+//                             when { expression { edgex.isReleaseStream() } }
+//                             steps {
+//                                 script {
+//                                     docker.withRegistry("https://${env.DOCKER_REGISTRY}:10004") {
+//                                         image_amd64.push(env.GIT_COMMIT)
+//                                         image_amd64.push('1.1.1')
+//                                     }
+//                                 }
+//                             }
+//                         }
                     }
                 }
 
@@ -78,36 +78,36 @@ pipeline {
                             }
                         }
 
-                        stage('Docker Push') {
-                            when { expression { edgex.isReleaseStream() } }
-                            steps {
-                                script {
-                                    docker.withRegistry("https://${env.DOCKER_REGISTRY}:10004") {
-                                        image_arm64.push(env.GIT_COMMIT)
-                                        image_arm64.push('1.1.1')
-                                    }
-                                }
-                            }
-                        }
+//                         stage('Docker Push') {
+//                             when { expression { edgex.isReleaseStream() } }
+//                             steps {
+//                                 script {
+//                                     docker.withRegistry("https://${env.DOCKER_REGISTRY}:10004") {
+//                                         image_arm64.push(env.GIT_COMMIT)
+//                                         image_arm64.push('1.1.1')
+//                                     }
+//                                 }
+//                             }
+//                         }
                     }
                 }
             }
         }
 
-        stage('Clair Image Scan') {
-            when { expression { edgex.isReleaseStream() } }
-            steps {
-                edgeXClair("${env.DOCKER_REGISTRY}:10004/docker-edgex-taf-common:1.1.1")
-                edgeXClair("${env.DOCKER_REGISTRY}:10004/docker-edgex-taf-common-arm64:1.1.1")
-            }
-        }
+//         stage('Clair Image Scan') {
+//             when { expression { edgex.isReleaseStream() } }
+//             steps {
+//                 edgeXClair("${env.DOCKER_REGISTRY}:10004/docker-edgex-taf-common:1.1.1")
+//                 edgeXClair("${env.DOCKER_REGISTRY}:10004/docker-edgex-taf-common-arm64:1.1.1")
+//             }
+//         }
     }
 
-    post {
-        always {
-            edgeXInfraPublish()
-        }
-    }
+//     post {
+//         always {
+//             edgeXInfraPublish()
+//         }
+//     }
 }
 
 def loadGlobalLibrary(branch = '*/master') {
