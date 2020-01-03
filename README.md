@@ -15,20 +15,15 @@ TUC - Test Util Catalog.
 # Usage
 
 1. Create a edgex-taf project which contains a TAF folder.
-2. Add edgex-taf-common as a submodule to your edgex-taf project and install required lib:
+2. Install required lib:
     ```shell script
-    git submodule add git@github.com:edgexfoundry-holding/edgex-taf-common.git
-    pip3 install robotbackgroundlogger
-    pip3 install robotframework
-    pip3 install configparser
+    pip3 install git+ssh://git@github.com:edgexfoundry/edgex-taf-common.git
+    pip3 install -r requirements.txt
     ```
+   
     Then your project structure will be:
     ```
     edgex-taf-project
-    └── edgex-taf-common
-        ├── README.md
-        ├── TAF-Manager
-        └── TUC
     ├── TAF
     │   ├── README.md
     │   ├── __init__.py
@@ -45,15 +40,15 @@ TUC - Test Util Catalog.
 3. Run test scripts via the edgex-taf-common:
     ```shell script
     # Run use cases
-    python3 edgex-taf-common/TAF-Manager/trigger/run.py -u UC_coredata -u UC_metadata
+    python3 -m TUC -u UC_coredata -u UC_metadata
     
     # Run test cases
-    python3 edgex-taf-common/TAF-Manager/trigger/run.py -t UC_coredata/event.robot -t UC_metadata/device.robot
+    python3 -m TUC -t UC_coredata/event.robot -t UC_metadata/device.robot
     ```
    
 4. Develop with IDE
 
-   In edgex-taf-common/TAF-Manager/trigger/run.py, Edgex-taf add the **edgex-taf-common** to the **system path**, so you should also add the path to the IDE. 
+   Since we use edgex-taf-common as module, we need to add it to the IDE. [For the pycharm example, add interpreter paths.](https://www.jetbrains.com/help/pycharm/installing-uninstalling-and-reloading-interpreter-paths.html)
 
 5. Build docker image
     ```shell script
